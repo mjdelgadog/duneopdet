@@ -1,0 +1,27 @@
+BEGIN_PROLOG
+
+standard_ophit_finder_spe:
+{
+    module_type:     "OpHitFinderSPE"
+    GenModule:       "generator"
+    InputModule:     "opdec"       //Module with the recob::OpWaveform object         
+    InputModuledigi: "opdigi"      //Module with the raw::OpDetWaveform object
+    InputLabels:     [ "" ]
+    
+    InputDigiType:   "recob" # Write recob for OpWaveform object raw OpDetWaveform object
+    ChannelMasks:    []      # Will ignore channels in this list
+    HitThreshold:    0.2     # Amplitude threshold for hits "to be checked"    
+    UseCalibrator:   false   # If set to false, SPE parameters below
+                             # are used. If set to true, is it unusable? 
+    AreaToPE:        true    # Use area to calculate number of PEs
+    ScalingFactor:   100.0   # If AreaToPE is true, this number is 
+    SPEArea:         100.0   # For deco waveforms, should be equal to ScalingFactor 
+                             # used as single PE area (for raw (ADC*ns)/(sampling rate)16ns = ADC counts)
+    SPEShift:        0.0     # Baseline offset in ADC->SPE conversion  "to be checked"
+    reco_man:        @local::standard_preco_manager
+    HitAlgoPset:     @local::standard_algo_slidingwindow
+    PedAlgoPset:     @local::standard_algo_pedestal_edges      
+    
+}
+
+END_PROLOG
