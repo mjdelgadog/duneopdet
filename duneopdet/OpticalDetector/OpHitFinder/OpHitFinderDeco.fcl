@@ -1,8 +1,8 @@
 BEGIN_PROLOG
 
-standard_ophit_finder_spe:
+dune_ophit_finder_deco:
 {
-    module_type:     "OpHitFinderSPE"
+    module_type:     "OpHitFinderDeco"
     GenModule:       "generator"
     InputModule:     "opdec"       //Module with the recob::OpWaveform object         
     InputModuledigi: "opdigi"      //Module with the raw::OpDetWaveform object
@@ -10,7 +10,7 @@ standard_ophit_finder_spe:
     
     InputDigiType:   "recob" # Write recob for OpWaveform object raw OpDetWaveform object
     ChannelMasks:    []      # Will ignore channels in this list
-    HitThreshold:    0.2     # Amplitude threshold for hits "to be checked"    
+    HitThreshold:    7.0     # Amplitude threshold for hits "to be checked"    
     UseCalibrator:   false   # If set to false, SPE parameters below
                              # are used. If set to true, is it unusable? 
     AreaToPE:        true    # Use area to calculate number of PEs
@@ -23,5 +23,13 @@ standard_ophit_finder_spe:
     PedAlgoPset:     @local::standard_algo_pedestal_edges      
     
 }
+
+# If set to "raw", use the below configuration:
+
+standard_ophit.HitThreshold:  0.2
+standard_ophit.AreaToPE:      true
+standard_ophit.SPEArea:       264
+standard_ophit.SPEShift:      0.43
+
 
 END_PROLOG

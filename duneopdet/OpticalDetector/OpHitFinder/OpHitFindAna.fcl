@@ -1,6 +1,6 @@
 BEGIN_PROLOG
 
-standard_ophitfindana:
+dune_ophitfindana:
    {
      module_type:            "OpHitFindAna"
      InputModule:            "ophitspe"   

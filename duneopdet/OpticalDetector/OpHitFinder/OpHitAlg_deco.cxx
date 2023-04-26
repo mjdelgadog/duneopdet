@@ -1,17 +1,14 @@
-// -*- mode: c++; c-basic-offset: 2; -*-
-/*!
- * Title:   OpHit Algorithims
- * Authors, editors:  Ben Jones, MIT
- *                    Wes Ketchum wketchum@lanl.gov
- *                    Gleb Sinev  gleb.sinev@duke.edu
- *                    Alex Himmel ahimmel@fnal.gov
- *                    Kevin Wood  kevin.wood@stonybrook.edu
- *
- * Description:
- * These are the algorithms used by OpHitFinder to produce optical hits.
- * recob::OpWaveform object has been included inside the 
- * RunHitFinder_deco function.
- */
+// ========================================================================================
+// OpHitAlg_deco.cxx
+// This module is based on the larana/OpHitAlg.cxx. It has been updated to deal with   
+// deconvolved signals. These are the algorithms used by OpHitFinderDeco to produce optical 
+// hits. recob::OpWaveform object has been included inside the RunHitFinder_deco function.
+// Added the scaling factor inside the new RunHitFinder_deco function. It scales the values 
+// of the deconvolved signals before the hit finder.
+// 
+// @authors     : Daniele Guffanti, Maritza Delgado, Sergio Manthey Corchado
+// @created     : Oct, 2022 
+//=========================================================================================
 
 #include "OpHitAlg_deco.h"
 
@@ -59,8 +56,7 @@ namespace opdet {
       const double timeStamp = waveform.TimeStamp();
 
       for (auto const& pulse : pulses)
-        ConstructHit(opDetWaveformVector,
-                     hitThreshold,
+        ConstructHit(hitThreshold,
                      channel,
                      timeStamp,
                      pulse,
@@ -110,8 +106,7 @@ namespace opdet {
       // Get the result
       auto const& pulses = threshAlg.GetPulses();
       for (auto const& pulse : pulses)
-        ConstructHit(opDetWaveformVector,
-                     hitThreshold,
+        ConstructHit(hitThreshold,
                      channel,
                      timeStamp,
                      pulse,
@@ -123,8 +118,7 @@ namespace opdet {
  }
   
   //----------------------------------------------------------------------------
-  void ConstructHit(std::vector<raw::OpDetWaveform> const&,
-                    float hitThreshold,
+  void ConstructHit(float hitThreshold,
                     int channel,
                     double timeStamp,
                     pmtana::pulse_param const& pulse,

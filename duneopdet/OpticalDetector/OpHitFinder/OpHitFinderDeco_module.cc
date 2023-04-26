@@ -1,17 +1,18 @@
-/* -*- mode: c++; c-basic-offset: 2; -*-
- * Gleb Sinev, Duke, 2016
- *
- * This module finds periods of time-localized activity
- * on each channel of the optical system and creates OpHits.
- *
- * The recob::OpWaveform object has been included for the
- * deconvolved signals, 2023.
- *
- * Split from OpFlashFinder_module.cc
- * by Ben Jones, MIT, 2013
- */
-
-// LArSoft includes
+// ===============================================================================
+// OpHitFinderDeco_module.cc
+// This module is based on the larana/OpHitFinder module. It has been updated
+// to deal with deconvolved waveforms.The module takes either raw::OpDetWaveforms
+// (raw signals) or recob:OpWaveforms (deconvolved signals) as input,  
+// and generates OpHits as output.
+// The HitFinder algorithm can be chosen by the user.
+// Added the scaling factor inside the new RunHitFinder_deco function.  
+// It scales the values of the deconvolved signals before the hit finder.
+//
+// @authors     : Daniele Guffanti, Maritza Delgado, Sergio Manthey Corchado
+// @created     : Oct, 2022 
+//================================================================================
+ 
+ // LArSoft includes
 #include "larcore/CoreUtils/ServiceUtil.h" 
 #include "larcore/Geometry/Geometry.h"
 #include "larana/OpticalDetector/OpHitFinder/AlgoCFD.h"
@@ -232,7 +233,15 @@ namespace opdet {
       else
         evt.getByLabel(fInputModuledigi, fInputLabels.front(), rawHandle);
       assert(rawHandle.isValid());
-      RunHitFinder(*rawHandle,*HitPtr,fPulseRecoMgr,*fThreshAlg,geometry,fHitThreshold,clock_data,calibrator,fUseStartTime);
+      RunHitFinder(*rawHandle,
+                   *HitPtr,
+                   fPulseRecoMgr,
+                   *fThreshAlg,
+                   geometry,
+                   fHitThreshold,
+                   clock_data,
+                   calibrator,
+                   fUseStartTime); 
     }
     else {
 
@@ -253,15 +262,13 @@ namespace opdet {
         evt.getByLabel(fInputModuledigi, label, rawHandle);
         if (!rawHandle.isValid()) continue; // Skip non-existent collections
 
-        //WaveformVector.insert(WaveformVector.end(),
-        //                      wfHandle->begin(), wfHandle->end());
         for (auto const& wf : *rawHandle) {
           if (fChannelMasks.find(wf.ChannelNumber()) != fChannelMasks.end()) continue;
           WaveformVector.push_back(wf);
         }
       }
 
-      RunHitFinder(*rawHandle,
+      RunHitFinder(WaveformVector,
                    *HitPtr,
                    fPulseRecoMgr,
                    *fThreshAlg,

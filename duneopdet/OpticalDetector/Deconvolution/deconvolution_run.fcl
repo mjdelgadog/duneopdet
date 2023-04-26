@@ -35,13 +35,13 @@ physics:
    
    producers:
    {
-      opdec: @local::standard_deconvolution
+      opdec: @local::dune_deconvolution
       rns:   { module_type: "RandomNumberSaver" }
    }
 
    analyzers:
    {
-      opdecoana:  @local::standard_deco_analysis
+      opdecoana:  @local::dune_deco_analysis
    }
    
    

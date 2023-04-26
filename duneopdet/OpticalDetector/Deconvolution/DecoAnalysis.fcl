@@ -1,6 +1,6 @@
 BEGIN_PROLOG
 
-standard_deco_analysis:
+dune_deco_analysis:
    {
      module_type:              "DecoAnalysis"
      InputModuleDeco:          "opdec" 

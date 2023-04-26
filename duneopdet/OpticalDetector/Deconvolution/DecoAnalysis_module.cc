@@ -11,7 +11,6 @@
  
 // LArSoft includes
 #include "larcore/Geometry/Geometry.h"
-#include "lardataobj/RawData/OpDetPulse.h"
 #include "lardataobj/RawData/OpDetWaveform.h"
 #include "lardataobj/RecoBase/OpHit.h"
 #include "lardataobj/RecoBase/OpWaveform.h"
@@ -99,13 +98,13 @@ namespace opdet {
     // Map to store how many waveforms are on one optical channel
     std::map< int, int > mapChannelWF;
   
-    // Get OpWaveforms from the event
+    // Get deconvolved "OpWaveforms" from the event
     art::Handle< std::vector< recob::OpWaveform >> deconv;
     evt.getByLabel(fInputModuleDeco, fInstanceName, deconv);
     std::vector< recob::OpWaveform > OpWaveform;
     for (auto const& wf : *deconv) {OpWaveform.push_back(wf);}
     
-    // Get OpDetWaveforms from the event
+    // Get Waveforms "OpDetWaveforms" from the event
     art::Handle< std::vector< raw::OpDetWaveform >> digi;
     evt.getByLabel(fInputModuleDigi, fInstanceName, digi);
     std::vector< raw::OpDetWaveform > OpDetWaveform;
@@ -133,10 +132,8 @@ namespace opdet {
       std::stringstream histName;
       histName << "event_"      << evt.id().event() 
               << "_opchannel_" << channel
-              << "_decowaveform_"  << mapChannelWF[channel]
-              << "_firstwvftime_"  << firstWaveformTime
-              << "_timestamp_"  << waveform.TimeStamp();
-
+              << "_decowaveform_"  << mapChannelWF[channel];
+              
       // Increase counter for number of waveforms on this optical channel
       mapChannelWF[channel]++;
 

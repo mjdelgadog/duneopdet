@@ -1,18 +1,18 @@
+// ===============================================================
+// OpHitFindAna_module.cc
+// This module is based on the larana/OpFlashAna_module.cc.  
 // This analyzer writes out a TTree containing the properties of
 // each reconstructed ophit
-//
+// ================================================================
 
 #ifndef OpHitFindAna_h
 #define OpHitFindAna_h
 
 // LArSoft includes
 #include "larcore/Geometry/Geometry.h"
-#include "lardataobj/RawData/OpDetPulse.h"
-#include "lardataobj/RawData/OpDetWaveform.h"
 #include "lardataobj/RecoBase/OpHit.h"
 #include "lardataobj/RecoBase/OpWaveform.h"
 #include "lardata/DetectorInfoServices/DetectorClocksService.h"
-#include "lardata/DetectorInfoServices/DetectorPropertiesService.h"
 
 // ART includes.
 #include "art/Framework/Core/EDAnalyzer.h"
@@ -23,25 +23,20 @@
 #include "art_root_io/TFileService.h"
 #include "canvas/Persistency/Common/FindManyP.h"
 #include "fhiclcpp/ParameterSet.h"
-#include "art_root_io/TFileDirectory.h"
-#include "messagefacility/MessageLogger/MessageLogger.h"
 
 // ROOT includes
 #include "TH1.h"
 #include "THStack.h"
 #include "TF1.h"
-#include "TLorentzVector.h"
 #include "TVector3.h"
 #include "TTree.h"
 
 // C++ Includes
 #include <map>
 #include <vector>
-#include <iostream>
 #include <cstring>
 #include <sstream>
 #include "math.h"
-#include <climits>
 
 
 namespace opdet {
@@ -65,8 +60,7 @@ namespace opdet {
      
     // Flags to enable or disable output of debugging 
     bool fMakePerOpHitTree;
-    
-      
+         
     TTree* fPerOpHitTree;
     TTree* fPerChannelTree;
 
@@ -120,7 +114,7 @@ namespace opdet {
         
     fMakePerOpHitTree   = pset.get<bool>("MakePerOpHitTree");
    
-    // If required, make TTree for output
+    // TTree for output
 
     if (fMakePerOpHitTree) {
       fPerOpHitTree = tfs->make<TTree>("PerOpHitTree", "PerOpHitTree");

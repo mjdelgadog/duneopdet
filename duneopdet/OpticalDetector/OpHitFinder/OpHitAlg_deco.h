@@ -1,16 +1,17 @@
-// -*- mode: c++; c-basic-offset: 2; -*-
+// ========================================================================================
+// OpHitAlg_deco.h
+// This module is based on the larana/OpHitAlg.h. It has been updated to deal with   
+// deconvolved signals. These are the algorithms used by OpHitFinderDeco to produce optical 
+// hits. recob::OpWaveform object has been included inside the RunHitFinder_deco function.
+// Added the scaling factor inside the new RunHitFinder_deco function. It scales the values 
+// of the deconvolved signals before the hit finder.
+// 
+// @authors     : Daniele Guffanti, Maritza Delgado, Sergio Manthey Corchado
+// @created     : Oct, 2022 
+//=========================================================================================
+
 #ifndef OPHITALG_DECO_H
 #define OPHITALG_DECO_H
-/*!
- * Title:   OpHit Algorithims
- * Author:  Ben Jones, MIT ( Edited by wketchum@lanl.gov, gleb.sinev@duke.edu
- *                           and kevin.wood@stonybrook.edu )
- *
- * Description:
- * These are the algorithms used by OpHit to produce optical hits.
- * recob::OpWaveform object has been included inside the 
- * RunHitFinder_deco function.
- */
 
 #include "larana/OpticalDetector/OpHitFinder/PMTPulseRecoBase.h"
 #include "lardataobj/RawData/OpDetWaveform.h"
@@ -56,8 +57,7 @@ namespace opdet {
                     calib::IPhotonCalibrator const&,
                     bool use_start_time = false);
 
-  void ConstructHit(std::vector<raw::OpDetWaveform> const&,
-                    float,                                   
+  void ConstructHit(float,                                   
                     int,
                     double,
                     pmtana::pulse_param const&,
